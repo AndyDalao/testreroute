@@ -1,8 +1,46 @@
 <template>
   <div class="background"></div>
   <main class="flex items-center justify-center">
+    <!-- Welcome Page -->
     <!-- language choice -->
-    <div id="language_page" class="flex w-screen h-screen items-center">
+    <div
+      v-if="welcomepage"
+      id="welcome_page"
+      class="flex w-screen h-screen items-center"
+    >
+      <div class="language_container">
+        <h1 class="language_p chooseyourlanguage">
+          TherapistYourself by Qi Herbs & Acupuncture
+        </h1>
+        <p>
+          Check Your Symptoms Before Purchasing Our Herbal Supplements Online
+        </p>
+        <br />
+        <button
+          class="
+            p-4
+            rounded-xl
+            font-bold
+            mb-3
+            relative
+            next_hover
+            border-2
+            text-white
+            border-white
+          "
+          @click="WelcompageEnter()"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+
+    <!-- language choice -->
+    <div
+      v-if="languagePage"
+      id="language_page"
+      class="flex w-screen h-screen items-center"
+    >
       <div class="language_container">
         <p class="language_p chooseyourlanguage">
           Choose your language<br />选择语言
@@ -18,7 +56,6 @@
             border-2
             text-white
             border-white
-            English_btn
           "
           @click="Language_btn_English()"
         >
@@ -36,7 +73,6 @@
             border-2
             text-white
             border-white
-            Chinese_btn
           "
           @click="Language_btn_Chinese()"
         >
@@ -51,9 +87,26 @@
       class="flex w-screen h-screen items-center"
     >
       <div class="symptom_container">
-        <p class="symptom_p chooseyourlanguage" id="chooseyoursymptom">
+        <button
+          class="
+            p-4
+            font-bold
+            mb-3
+            relative
+            next_hover
+            border-2
+            text-white
+            border-white
+            float-left
+            rounded-l-3xl rounded-r-md
+          "
+          @click="refresh()"
+        >
+          Back
+        </button><br><br><br>
+        <h1 class="symptom_p chooseyourlanguage" id="chooseyoursymptom">
           Choose your symptom
-        </p>
+        </h1>
         <!--<router-link to="/Depression/en" id="depression_btn" class="p-4 rounded-xl font-bold mb-3 relative next_hover border-2 text-white border-white symp_btn" >Depression</router-link> -->
 
         <router-link
@@ -99,7 +152,24 @@
       class="flex w-screen h-screen items-center"
     >
       <div class="symptom_container">
-        <p class="symptom_p" id="chooseyoursymptom">选择症状</p>
+        <button
+          class="
+            p-4
+            font-bold
+            mb-3
+            relative
+            next_hover
+            border-2
+            text-white
+            border-white
+            float-left
+            rounded-l-3xl rounded-r-md
+          "
+          @click="refresh()"
+        >
+          返回</button
+        ><br /><br /><br />
+        <h1 class="symptom_p" id="chooseyoursymptom">选择症状</h1>
         <router-link
           to="/Severeflu/ch"
           id="depression_btn"
@@ -212,7 +282,7 @@
 }
 .symptom_p {
   margin-bottom: 3rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 .language_container {
   width: 600px;
@@ -232,7 +302,8 @@
 }
 .language_p {
   margin-bottom: 3rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 .Chinese_btn {
   margin: auto;
@@ -353,75 +424,48 @@ import { onMounted } from "@vue/runtime-core";
 export default {
   name: "Home",
   setup() {
+    let languagePage = ref(false);
+    let welcomepage = ref(true);
     let is_in_quiz = ref(false);
     let Chinese_symptom = ref(false);
     let English_symptom = ref(false);
     let EnglishVer = ref(false);
 
-    let userInfo = [];
+    const WelcompageEnter = () => {
+      welcomepage.value = false;
+      languagePage.value = true;
+    };
+
+    const refresh = () => {
+      window.location.href = "/";
+    };
 
     const Language_btn_English = () => {
-      //English_symptom.value = true
       EnglishVer.value = true;
-      const quizcontainer = document.getElementById("language_page");
-      quizcontainer.classList.add("hide");
+      languagePage.value = false;
     };
 
     const Language_btn_Chinese = () => {
       Chinese_symptom.value = true;
-      const quizcontainer = document.getElementById("language_page");
-      quizcontainer.classList.add("hide");
+      languagePage.value = false;
     };
-
-    const SubmitUserInfo = () => {
-      console.log("hi");
-      EnglishVer.value = true;
-      English_symptom.value = false;
-
-      let User = {
-        first_name: document.getElementById("first_name").value,
-        last_name: document.getElementById("last_name").value,
-        date_of_birth: document.getElementById("date_of_birth").value,
-        address: document.getElementById("address").value,
-        phone_number: document.getElementById("phone_number").value,
-        email: document.getElementById("email").value,
-        patient_id: document.getElementById("patient_id").value,
-      };
-
-      userInfo.push(User);
-      document.forms[0].reset();
-      console.log("this is", userInfo);
-    };
-
-    // const sendEmail = (e) =>{
-
-    //   emailjs.sendForm('TherapTest', 'template_1v2cph5',e.target, 'user_UKebMQMWVXBh0noIJuM46')
-    //     .then((result) => {
-    //         console.log('SUCCESS!', result.text);
-    //     }, (error) => {
-    //         console.log('FAILED...', error.text);
-    //     });
-
-    // };
 
     const message = ref("You are not logged in!");
 
-    onMounted(async () => {
-      // await fetch('http://localhost:3000/user',{
-      //   headers:{'Content-Type':'application/json'}
-      // })
-
-    });
+    onMounted(async () => {});
 
     return {
+      welcomepage,
+      WelcompageEnter,
       message,
-      SubmitUserInfo,
+      languagePage,
       is_in_quiz,
       Language_btn_English,
       Language_btn_Chinese,
       English_symptom,
       Chinese_symptom,
       EnglishVer,
+      refresh,
     };
   },
 };

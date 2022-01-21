@@ -3,7 +3,7 @@ import SidebarLink from "./SidebarLink";
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import { Auth } from "aws-amplify";
 
-import '@fortawesome/fontawesome-free/js/all' 
+import "@fortawesome/fontawesome-free/js/all";
 
 export default {
   props: {},
@@ -40,7 +40,7 @@ export default {
   <div class="sidebar" :style="{ width: sidebarWidth }">
     <h1>
       <span v-if="collapsed">
-        <div>T</div>
+        <div to="/">T</div>
       </span>
       <span v-else>Therapist Yourself</span>
     </h1>

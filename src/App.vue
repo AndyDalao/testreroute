@@ -1,6 +1,7 @@
 <script>
 import Sidebar from "./views/sidebar/Sidebar";
 import { sidebarWidth } from "./views/sidebar/state";
+
 export default {
   components: { Sidebar },
   setup() {

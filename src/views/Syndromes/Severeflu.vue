@@ -17,10 +17,10 @@
       <div class="button--loading"></div>
     </div>
 
-    <!-- choice page -->
     <div id="choicePage" class="modal hide">
       <div class="modal-content">
         <br />
+
         <p v-if="LanCh">
           填写基本信息，我们的医生会用邮件的方式与您联系购买以上中药方剂的详细信息
         </p>
@@ -28,16 +28,14 @@
           Fill in the basic information and our doctors will contact you via
           email
         </p>
-        <p v-if="LanCh">
-          我们将会通过邮件或者手机号向您确认订单，或者您可以拨打（416)-968-7755
-          致电我们的诊所
-        </p>
+        <p v-if="LanCh">填写邮寄信息（*必填）</p>
         <p v-if="LanEng">
           We will confirm the order with you via email or phone, or you can
           call（416)-968-7755 for more information
         </p>
+
         <form ref="form" @submit.prevent="sendEmail">
-          <label v-if="LanCh">姓名: </label>
+          <label v-if="LanCh">*姓名: </label>
           <input
             v-if="LanCh"
             id="name"
@@ -46,7 +44,7 @@
             required
           />
           <br />
-          <label v-if="LanCh">邮箱：</label>
+          <label v-if="LanCh">*邮箱:</label>
 
           <input
             v-if="LanCh"
@@ -57,7 +55,7 @@
           />
           <br />
 
-          <label v-if="LanCh">手机号（如果希望手机确认订单）：</label>
+          <label v-if="LanCh">*手机号码:</label>
 
           <input
             v-if="LanCh"
@@ -66,8 +64,48 @@
             v-model="phone"
             required
           />
+          <br />
+          <label v-if="LanCh">*单元或街道名称:</label>
 
-          <label v-if="LanEng">Preferred Name: </label>
+          <input
+            v-if="LanCh"
+            id="address"
+            class="border"
+            v-model="address"
+            required
+          />
+          <br />
+          <label v-if="LanCh">*城市:</label>
+
+          <input
+            v-if="LanCh"
+            id="city"
+            class="border"
+            v-model="city"
+            required
+          />
+          <br />
+          <label v-if="LanCh">*省:</label>
+
+          <input
+            v-if="LanCh"
+            id="province"
+            class="border"
+            v-model="province"
+            required
+          />
+          <br />
+          <label v-if="LanCh">*邮编:</label>
+
+          <input
+            v-if="LanCh"
+            id="postalcode"
+            class="border"
+            v-model="postalcode"
+            required
+          />
+
+          <label v-if="LanEng">*Name: </label>
           <input
             v-if="LanEng"
             id="name"
@@ -75,8 +113,8 @@
             v-model="name"
             required
           />
-
-          <label v-if="LanEng">Email: </label>
+          <br />
+          <label v-if="LanEng">*Email: </label>
           <input
             v-if="LanEng"
             id="email"
@@ -84,9 +122,8 @@
             v-model="email"
             required
           />
-          <label v-if="LanEng"
-            >Phone Number (if prefer confirm order via phone)</label
-          >
+          <br />
+          <label v-if="LanEng">*Cellphone:</label>
           <input
             v-if="LanEng"
             id="phone"
@@ -94,7 +131,56 @@
             v-model="phone"
             required
           />
+          <br />
+          <label v-if="LanEng">*Unit and Street:</label>
 
+          <input
+            v-if="LanEng"
+            id="address"
+            class="border"
+            v-model="address"
+            required
+          />
+          <br />
+          <label v-if="LanEng">*City:</label>
+
+          <input
+            v-if="LanEng"
+            id="city"
+            class="border"
+            v-model="city"
+            required
+          />
+          <br />
+          <label v-if="LanEng">*Province:</label>
+
+          <input
+            v-if="LanEng"
+            id="province"
+            class="border"
+            v-model="province"
+            required
+          />
+          <br />
+          <label v-if="LanEng">*Postal Code:</label>
+
+          <input
+            v-if="LanEng"
+            id="postalcode"
+            class="border"
+            v-model="postalcode"
+            required
+          />
+
+          <p v-if="LanCh">
+            中医师收到订单后会联系您再次确认订单，您也可以致电:416-968-7755
+            或发送邮件至: therapistyourself@gmail.com
+          </p>
+          <p v-if="LanEng">
+            We will confirm the order with you via email or phone, you can also
+            call（416)-968-7755 or email to therapistyourself@gmail.com
+          </p>
+          <br />
           <button
             v-if="LanEng"
             type="submit"
@@ -159,7 +245,7 @@
         </button>
 
         <button v-if="LanCh" class="hover symp_btn" @click="showChoice()">
-          通过邮件购买！
+          通过邮件购买!
         </button>
         <br />
 
@@ -176,7 +262,7 @@
     <div v-if="is_in_quiz" class="quiz_container">
       <!-- progress bar -->
       <div class="progressbarcontainer bg-white shadow mt-2 text-center">
-        <div class="progress" :style="`width:${numerator.id * 5}%`">
+        <div class="progress" :style="`width:${numerator.id * 6.244}%`">
           {{ numerator.id }}
         </div>
       </div>
@@ -488,9 +574,7 @@ export default {
     let LanCh = ref(false);
     let questionIndex = 1;
     let optionScoreList = [];
-    let answerList = [
-      6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    ];
+    let answerList = [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6];
     let back_btn_records = {
       id: [],
       score: [],
@@ -518,10 +602,9 @@ export default {
     let dampnessScore = 0;
 
     const fetch_data = () => {
-      if (questionIndex <= 20) {
+      if (questionIndex <= 16) {
         fetch(
-          "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getQuestion?questionId=" +
-            questionIndex,
+          "http://localhost:3000/sf_getQuestion?questionId=" + questionIndex,
           {
             method: "GET",
             headers: {
@@ -545,16 +628,12 @@ export default {
     };
 
     const checkForMed = () => {
-      fetch(
-        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getList?dampnessScore=" +
-          dampnessScore,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch("http://localhost:3000/sf_getList?dampnessScore=" + dampnessScore, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((length) => length.json())
         .then(function (why) {
           finalMedList.push(why[0]);
@@ -577,7 +656,6 @@ export default {
           JSON.parse(tempMedicineList[finalChoice]).forEach((element) => {
             finalMedList.push(element);
           });
-          //finalMedList.push(JSON.parse(tempMedicineList[finalChoice]));
         }
         //add score to dampness
         if (optionScoreList[finalChoice] != 0) {
@@ -683,18 +761,30 @@ export default {
     };
 
     const loadingModal = () => {
+      let verticalMedList = [];
+      for (let i = 0; i < finalMedList.length; i++) {
+        verticalMedList.push(finalMedList[i]);
+        verticalMedList.push("<br>");
+      }
       fetch(
-        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sendemail?usermail=" +
+        "http://localhost:3000/sendemail?usermail=" +
           document.getElementById("email").value +
-          "&medlist=[" +
-          finalMedList +
-          "]&phonenumber=" +
+          "&medlist=" +
+          verticalMedList +
+          "&phonenumber=" +
           document.getElementById("phone").value +
           "&username=" +
           document.getElementById("name").value +
           "&userChoice=[" +
           answerList +
-          "]",
+          "]&address=" +
+          document.getElementById("address").value +
+          "&city=" +
+          document.getElementById("city").value +
+          "&province=" +
+          document.getElementById("province").value +
+          "&postalcode=" +
+          document.getElementById("postalcode").value,
         {
           method: "GET",
         }
