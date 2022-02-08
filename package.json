@@ -10,6 +10,8 @@
   "dependencies": {
     "@aws-amplify/ui-components": "^1.9.6",
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "@paypal/paypal-js": "^5.0.1",
     "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",

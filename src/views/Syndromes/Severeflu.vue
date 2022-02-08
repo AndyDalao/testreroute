@@ -834,8 +834,10 @@ export default {
     });
     onMounted(() => {
       is_in_quiz.value = true;
-
+      
       const route = useRoute();
+      console.log('language is:',route.params.Language)
+
       if (route.params.Language == "ch") {
         LanCh.value = true;
         //version = chinese
