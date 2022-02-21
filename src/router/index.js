@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Dysmenorrhea from "../views/Syndromes/Dysmenorrhea.vue";
 import Severeflu from "../views/Syndromes/Severeflu.vue";
-import Payment from "../views/Payment.vue";
+import paymentsuccess from "../views/paymentsuccess.vue"
 
 // import PageNotFound from "../views/PageNotFound.vue";
 // import Login from "../views/Login.vue";
@@ -28,9 +28,9 @@ const routes = [
     component: Severeflu,
   },
   {
-    path: "/Payment/:orderId",
-    name: "Payment",
-    component: Payment,
+    path: "/paymentsuccess",
+    name: "paymentsuccess",
+    component: paymentsuccess,
   },
   // {
   //   path: "/Login",

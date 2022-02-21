@@ -1,5 +1,4 @@
 <template>
-  <head> </head>
   <div class="background"></div>
   <main class="mainclass">
     <!-- The Modal -->
@@ -241,11 +240,20 @@
         </div>
         <br />
         <button v-if="LanEng" class="hover symp_btn" @click="showChoice()">
-          Email us to buy herbs!
+          Email us to purchase herbs!
         </button>
 
         <button v-if="LanCh" class="hover symp_btn" @click="showChoice()">
-          通过邮件购买!
+          通过邮件购买
+        </button>
+        <br />
+
+        <button v-if="LanCh" class="hover symp_btn" @click="Pay()">
+          使用paypal或银行卡购买
+        </button>
+        <br />
+        <button v-if="LanEng" class="hover symp_btn" @click="Pay()">
+          Purchase with paypal/credit card!
         </button>
         <br />
 
@@ -567,6 +575,7 @@
 import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
+import axios from "axios";
 
 export default {
   setup() {
@@ -601,10 +610,39 @@ export default {
 
     let dampnessScore = 0;
 
+    const Pay = () => {
+      let verticalMedListpaypal = [];
+      for (let i = 0; i < finalMedList.length; i++) {
+        verticalMedListpaypal.push(finalMedList[i]);
+        verticalMedListpaypal.push("<br>");
+      }
+      axios(
+        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/pay?medicine=" +
+          finalMedList +
+          "&userchoice=[" +
+          answerList +
+          "]",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          window.location.replace(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
     const fetch_data = () => {
       if (questionIndex <= 16) {
         fetch(
-          "http://localhost:3000/sf_getQuestion?questionId=" + questionIndex,
+          "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getQuestion?questionId=" + questionIndex,
           {
             method: "GET",
             headers: {
@@ -628,7 +666,7 @@ export default {
     };
 
     const checkForMed = () => {
-      fetch("http://localhost:3000/sf_getList?dampnessScore=" + dampnessScore, {
+      fetch("http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getList?dampnessScore=" + dampnessScore, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -767,7 +805,7 @@ export default {
         verticalMedList.push("<br>");
       }
       fetch(
-        "http://localhost:3000/sendemail?usermail=" +
+        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sendemail?usermail=" +
           document.getElementById("email").value +
           "&medlist=" +
           verticalMedList +
@@ -834,9 +872,9 @@ export default {
     });
     onMounted(() => {
       is_in_quiz.value = true;
-      
+
       const route = useRoute();
-      console.log('language is:',route.params.Language)
+      console.log("language is:", route.params.Language);
 
       if (route.params.Language == "ch") {
         LanCh.value = true;
@@ -851,6 +889,7 @@ export default {
     });
 
     return {
+      Pay,
       back_btn,
       next_btn,
       denominator,
