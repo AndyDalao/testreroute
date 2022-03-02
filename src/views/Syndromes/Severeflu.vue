@@ -617,7 +617,7 @@ export default {
         verticalMedListpaypal.push("<br>");
       }
       axios(
-        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/pay?medicine=" +
+        "http://localhost:3000/pay?medicine=" +
           finalMedList +
           "&userchoice=[" +
           answerList +
@@ -642,7 +642,7 @@ export default {
     const fetch_data = () => {
       if (questionIndex <= 16) {
         fetch(
-          "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getQuestion?questionId=" + questionIndex,
+          "http://localhost:3000/sf_getQuestion?questionId=" + questionIndex,
           {
             method: "GET",
             headers: {
@@ -652,6 +652,7 @@ export default {
         )
           .then((resp) => resp.json())
           .then(function (resp) {
+            console.log("this is ", resp);
             questionIndex = resp.id;
             numerator.value.id = questionIndex;
             outputQuestion(resp);
@@ -666,12 +667,19 @@ export default {
     };
 
     const checkForMed = () => {
-      fetch("http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getList?dampnessScore=" + dampnessScore, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      fetch(
+        "http://localhost:3000/sf_getList?dampnessScore=" +
+          dampnessScore +
+          "&userchoice=[" +
+          answerList +
+          "]",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((length) => length.json())
         .then(function (why) {
           finalMedList.push(why[0]);
@@ -688,17 +696,21 @@ export default {
     const next_btn = () => {
       if (chooseOption == true) {
         clearSelected();
-        questionIndex = questionIndex + 1;
+        questionIndex = questionIndex + 1
         //add medicine to finalmedlist
-        if (tempMedicineList[finalChoice]) {
+        if (!tempMedicineList[finalChoice]) {
+          finalMedList.push("null");
+        } else {
           JSON.parse(tempMedicineList[finalChoice]).forEach((element) => {
             finalMedList.push(element);
           });
         }
+        console.log("that is finalmed", finalMedList);
         //add score to dampness
         if (optionScoreList[finalChoice] != 0) {
           dampnessScore = dampnessScore + optionScoreList[finalChoice];
         }
+
         //add history to score
         back_btn_records.id.push(questionIndex - 1);
         back_btn_records.score.push(dampnessScore);
@@ -731,9 +743,11 @@ export default {
           back_btn_records.score[back_btn_records.score.length - 2];
         back_btn_records.score.length = back_btn_records.score.length - 1;
         //remove med from history
+        console.log("that was", finalMedList);
         if (questionIndex < 16) {
           finalMedList.length = finalMedList.length - 1;
         }
+        console.log("that was after", finalMedList);
         optionScoreList.length = 0;
         chooseOption = false;
         itemsRef.length = 0;
@@ -753,8 +767,10 @@ export default {
           tempoptionlist.push(JSON.parse(element).body);
         }
         optionScoreList.push(JSON.parse(JSON.parse(element).score));
+
         tempMedicineList.push(JSON.parse(element).medicine);
       });
+
       questionList.value.optionsList = tempoptionlist;
     };
 
@@ -805,7 +821,7 @@ export default {
         verticalMedList.push("<br>");
       }
       fetch(
-        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sendemail?usermail=" +
+        "http://localhost:3000/sendemail?usermail=" +
           document.getElementById("email").value +
           "&medlist=" +
           verticalMedList +
@@ -874,7 +890,6 @@ export default {
       is_in_quiz.value = true;
 
       const route = useRoute();
-      console.log("language is:", route.params.Language);
 
       if (route.params.Language == "ch") {
         LanCh.value = true;
