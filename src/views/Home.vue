@@ -102,8 +102,8 @@
           "
           @click="refresh()"
         >
-          Back
-        </button><br><br><br>
+          Back</button
+        ><br /><br /><br />
         <h1 class="symptom_p chooseyourlanguage" id="chooseyoursymptom">
           Choose your symptom
         </h1>

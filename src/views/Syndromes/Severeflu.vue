@@ -696,7 +696,7 @@ export default {
     const next_btn = () => {
       if (chooseOption == true) {
         clearSelected();
-        questionIndex = questionIndex + 1
+        questionIndex = questionIndex + 1;
         //add medicine to finalmedlist
         if (!tempMedicineList[finalChoice]) {
           finalMedList.push("null");
@@ -798,7 +798,9 @@ export default {
       allMedinSet = new Set(finalMedList);
       finalMedList.length = 0;
       allMedinSet.forEach((element) => {
-        finalMedList.push(element);
+        if (element != "null") {
+          finalMedList.push(element);
+        }
       });
       is_in_quiz.value = false;
       endofQuiz.value = true;

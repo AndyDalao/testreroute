@@ -3,7 +3,6 @@ import Home from "../views/Home.vue";
 import Dysmenorrhea from "../views/Syndromes/Dysmenorrhea.vue";
 import Severeflu from "../views/Syndromes/Severeflu.vue";
 import paymentsuccess from "../views/paymentsuccess.vue";
-import medresult from "../views/MedResult.vue";
 
 // import PageNotFound from "../views/PageNotFound.vue";
 // import Login from "../views/Login.vue";
@@ -33,11 +32,7 @@ const routes = [
     name: "paymentsuccess",
     component: paymentsuccess,
   },
-  {
-    path: "/medresult/:Language/:userchoice/:dampnessScore",
-    name: "medresult",
-    component: medresult,
-  },
+ 
   // {
   //   path: "/Login",
   //   name: "Login",
