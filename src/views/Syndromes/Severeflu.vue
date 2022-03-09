@@ -652,7 +652,6 @@ export default {
         )
           .then((resp) => resp.json())
           .then(function (resp) {
-            console.log("this is ", resp);
             questionIndex = resp.id;
             numerator.value.id = questionIndex;
             outputQuestion(resp);
@@ -705,12 +704,10 @@ export default {
             finalMedList.push(element);
           });
         }
-        console.log("that is finalmed", finalMedList);
         //add score to dampness
         if (optionScoreList[finalChoice] != 0) {
           dampnessScore = dampnessScore + optionScoreList[finalChoice];
         }
-
         //add history to score
         back_btn_records.id.push(questionIndex - 1);
         back_btn_records.score.push(dampnessScore);
@@ -739,15 +736,15 @@ export default {
         answerList[questionIndex - 1] = 6;
         questionIndex = questionIndex - 1;
         //remove score from history
-        dampnessScore =
-          back_btn_records.score[back_btn_records.score.length - 2];
-        back_btn_records.score.length = back_btn_records.score.length - 1;
+        if (questionIndex >= 2) {
+          dampnessScore =
+            back_btn_records.score[back_btn_records.score.length - 2];
+          back_btn_records.score.length = back_btn_records.score.length - 1;
+        }
         //remove med from history
-        console.log("that was", finalMedList);
         if (questionIndex < 16) {
           finalMedList.length = finalMedList.length - 1;
         }
-        console.log("that was after", finalMedList);
         optionScoreList.length = 0;
         chooseOption = false;
         itemsRef.length = 0;
@@ -886,6 +883,10 @@ export default {
         event.preventDefault();
         onOptionClicked("Not Sure", 2);
         next_btn();
+      }
+      if (event.key === "b" && endofQuiz.value == false) {
+        event.preventDefault();
+        back_btn();
       }
     });
     onMounted(() => {
