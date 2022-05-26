@@ -267,37 +267,86 @@
     </div>
 
     <!-- quiz container -->
-
-    <div v-if="is_in_quiz" class="bodyimage_container">
-      <button class="p-10 headbox" @click="headimageselection()"></button>
-      <button class="p-10 chestbox" @click="bodyimageselection()"></button>
-      <img src="./body.png" />
+    <div v-if="is_in_quiz" class="quiz_container">
+      <!-- progress bar -->
+      <div class="progressbarcontainer bg-white shadow mt-2 text-center">
+        <div class="progress" :style="`width:${numerator.id * 6.244}%`">
+          {{ numerator.id }}
+        </div>
+      </div>
       <br />
+
+      <!-- question container -->
+      <div class="question_container">
+        <div
+          v-if="LanEng"
+          id="questionbody"
+          class="p-5"
+          v-html="questionList.questionbody"
+        ></div>
+        <div
+          v-if="LanCh"
+          id="questionbody"
+          class="p-5"
+          v-html="questionList.questionbody_chinese"
+        ></div>
+      </div>
+      <!-- option containr -->
+      <div class="mt-8 items-center">
+        <!-- option container -->
+        <div v-for="(option, item) in questionList.optionsList" :key="item">
+          <div
+            class="option-default p-1 rounded-lg mb-5 hover border-2"
+            :ref="optionChosen"
+            @click="onOptionClicked(option, item)"
+          >
+            <div class="rounded-lg font-bold text-yellow-400 flex p-2">
+              <!-- option name -->
+              <button class="flex items-center font-bold pl-6 text-center">
+                {{ option }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- option containr -->
+
+      <!--  button -->
+      <button
+        id="back_btn"
+        v-if="LanEng"
+        class="p-4 functionbutton rounded-lg hover center float-left"
+        @click="back_btn()"
+      >
+        Back
+      </button>
+      <button
+        v-if="LanCh"
+        id="back_btn"
+        class="p-4 functionbutton rounded-lg hover center float-left"
+        @click="back_btn()"
+      >
+        返回
+      </button>
+      <button
+        v-if="LanEng"
+        class="functionbutton rounded-lg hover float-right m-auto p-4"
+        @click="next_btn()"
+      >
+        Next
+      </button>
+      <button
+        v-if="LanCh"
+        class="functionbutton rounded-lg hover float-right m-auto p-4"
+        @click="next_btn()"
+      >
+        继续</button
+      ><br /><br />
     </div>
   </main>
 </template>
 
 <style scoped>
-.headbox {
-  right: 44%;
-
-  margin-top: 3rem;
-  z-index: 9;
-  position: absolute;
-}
-
-.chestbox {
-  right: 44%;
-
-  margin-top: 10rem;
-  z-index: 9;
-  position: absolute;
-}
-.BrainButton {
-  margin-left: 275px;
-  margin-top: 100px;
-  position: absolute;
-}
 .button {
   position: relative;
   padding: 8px 16px;
@@ -466,13 +515,6 @@
   background: rgb(28, 255, 130);
 }
 
-.bodyimage {
-  object-position: center;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-}
-
 .question_container {
   border-radius: 8px;
   overflow: auto;
@@ -506,20 +548,8 @@
 .quiz_container {
   min-width: 600px;
   max-width: 600px;
-  height: fit-content;
+  height: inline-block;
   opacity: 0.7;
-  background-color: #383838;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  border-radius: 2.5rem;
-  padding-top: 2rem;
-}
-
-.bodyimage_container {
-  position: relative;
-  min-width: 600px;
-  max-width: 600px;
-  height: fit-content;
   background-color: #383838;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -587,7 +617,7 @@ export default {
         verticalMedListpaypal.push("<br>");
       }
       axios(
-        "http://localhost:3000/pay?medicine=" +
+        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/pay?medicine=" +
           finalMedList +
           "&userchoice=[" +
           answerList +
@@ -612,7 +642,7 @@ export default {
     const fetch_data = () => {
       if (questionIndex <= 16) {
         fetch(
-          "http://localhost:3000/sf_getQuestion?questionId=" + questionIndex,
+          "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getQuestion?questionId=" + questionIndex,
           {
             method: "GET",
             headers: {
@@ -637,7 +667,7 @@ export default {
 
     const checkForMed = () => {
       fetch(
-        "http://localhost:3000/sf_getList?dampnessScore=" +
+        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sf_getList?dampnessScore=" +
           dampnessScore +
           "&userchoice=[" +
           answerList +
@@ -790,7 +820,7 @@ export default {
         verticalMedList.push("<br>");
       }
       fetch(
-        "http://localhost:3000/sendemail?usermail=" +
+        "http://nodejs-env.eba-m8uggs3z.us-east-2.elasticbeanstalk.com/sendemail?usermail=" +
           document.getElementById("email").value +
           "&medlist=" +
           verticalMedList +
@@ -821,14 +851,6 @@ export default {
           console.log(error);
           alert("You have sent too many emails, please try again later");
         });
-    };
-
-    const bodyimageselection = () => {
-      alert("clicked body");
-    };
-
-    const headimageselection = () => {
-      alert("clicked head");
     };
 
     const showChoice = () => {
@@ -886,8 +908,6 @@ export default {
 
     return {
       Pay,
-      bodyimageselection,
-      headimageselection,
       back_btn,
       next_btn,
       denominator,
